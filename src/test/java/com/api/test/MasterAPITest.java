@@ -8,6 +8,7 @@ import org.testng.annotations.Test;
 import com.api.constant.Role;
 import com.api.utils.AuthTokenProvider;
 import com.api.utils.ConfigManager;
+import com.api.utils.SpecUtil;
 
 import io.restassured.http.ContentType;
 import io.restassured.module.jsv.JsonSchemaValidator;
@@ -18,17 +19,23 @@ public class MasterAPITest {
 	public void masterAPITest() {
 		
 		given()
-			.baseUri(ConfigManager.getProperty("BASE_URI"))
-			.contentType(ContentType.JSON)
-			.header("Authorization",AuthTokenProvider.getToken(Role.FD))
+//			.baseUri(ConfigManager.getProperty("BASE_URI"))
+//			.contentType(ContentType.JSON)
+//			.header("Authorization",AuthTokenProvider.getToken(Role.FD))
+			.spec(SpecUtil.requestSpecWithAuth(Role.FD))
+			.and()
+			.contentType("")
+			.log().all()
+	
 	
 		.when()
 		.post("master")
 		
 		.then()
-		.log().all()
-		.statusCode(200)
-		.time(Matchers.lessThan(1000L))
+//		.log().all()
+//		.statusCode(200)
+//		.time(Matchers.lessThan(1000L))
+		.spec(SpecUtil.responseSpec_OK())
 		.body("message",Matchers.equalTo("Success"))
 		.body("data",Matchers.notNullValue())
 		.body("data",Matchers.hasKey("mst_oem"))
@@ -47,16 +54,18 @@ public class MasterAPITest {
 	public void inValidTokenMasterAPITest()
 	{
 		given()
-		.baseUri(ConfigManager.getProperty("BASE_URI"))
-		.contentType(ContentType.JSON)
-		.header("Authorization","")
+//		.baseUri(ConfigManager.getProperty("BASE_URI"))
+//		.contentType(ContentType.JSON)
+//		.header("Authorization","")
+		.spec(SpecUtil.requestSpec())
 
 	.when()
 	.post("master")
 	
 	.then()
-	.log().all()
-	.statusCode(401);
+//	.log().all()
+//	.statusCode(401);
+	.spec(SpecUtil.responseSpec_TEXT(401));
 	}
 
 }

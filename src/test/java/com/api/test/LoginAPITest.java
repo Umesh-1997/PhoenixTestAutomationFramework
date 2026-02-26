@@ -9,12 +9,15 @@ import java.io.IOException;
 import org.testng.annotations.Test;
 
 import com.api.pojo.UserCredentials;
+import com.api.utils.SpecUtil;
+
 import static com.api.utils.ConfigManager.*;
 
 
 
 import io.restassured.http.ContentType;
 import io.restassured.module.jsv.JsonSchemaValidator;
+import io.restassured.specification.ResponseSpecification;
 
 public class LoginAPITest {
 	
@@ -25,27 +28,26 @@ public class LoginAPITest {
 		UserCredentials userCredentials = new UserCredentials("iamfd","password");
 		
 		given()
-		.baseUri(getProperty("BASE_URI"))  
-		.and()
-		.contentType(ContentType.JSON)
-		.and()
-		.accept(ContentType.JSON)
-		.and()
-		.body(userCredentials)
-		.log().uri()
-		.log().method()
-		.log().headers()
-		.log().body()
-		
+//		.baseUri(getProperty("BASE_URI"))  
+//		.and()
+//		.contentType(ContentType.JSON)
+//		.and()
+//		.accept(ContentType.JSON)
+//		.and()
+		.spec(SpecUtil.requestSpec(userCredentials))
+//		.body(userCredentials)
+//		.log().uri()
+//		.log().method()
+//		.log().headers()
+//		.log().body()
+//		
 		
 		
 		.when()
 			.post("login")
 			
 		.then()
-			.statusCode(200)
-			.log().all()
-			.time(lessThan(6000L))
+			.spec(SpecUtil.responseSpec_OK())
 			.and()
 			.body("message",equalTo("Success"))
 			.and()
