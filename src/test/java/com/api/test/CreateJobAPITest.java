@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.hamcrest.Matchers;
+import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
 import com.api.constant.Model;
@@ -29,19 +30,32 @@ import io.restassured.module.jsv.JsonSchemaValidator;
 public class CreateJobAPITest {
 	// Creating CreateJobPayload Object
 	
+	private CreateJobPayload createJobPayload;
 	
-	@Test
-	public void createAPITest()
+	@BeforeMethod(description="Creating createJob api request payload")
+	public void setup()
 	{
-		
 		Customer customer = new Customer("Umesh", "Parab", "9769082745", "", "umesh.parabcr10@gmail.com", "");
 		CustomerAddress customerAddress = new CustomerAddress("B 999","Vasant Galaxy","Bangur Nagar", "InOrbit Mall","Mumbai", "500032","India","Maharashtra");
 		CustomerProduct customerProduct = new CustomerProduct(DateTimeUtil.getTimeWithDaysAgo(10), "25593655465247", "25593655465247", "25593655465247", DateTimeUtil.getTimeWithDaysAgo(10), Product.NEXUS_2.getCode(), Model.NEXUS_2_BLUE.getCode());
 		Problems problems=new Problems(Problem.SMARTPHONE_IS_RUNNING_SLOW.getCode(), "Battery Issues");
 		List<Problems> problemList = new ArrayList<Problems>();
 		problemList.add(problems);
-		CreateJobPayload createJobPayload = new CreateJobPayload(ServiceLocation.SERVICE_LOCATION_A.getCode(), Platform.FRONT_DESK.getCode(), Warranty_Status.IN_WARRANTY.getCode(), OEM.GOOGLE.getCode(), customer, customerAddress, customerProduct, problemList);
+		createJobPayload = new CreateJobPayload(ServiceLocation.SERVICE_LOCATION_A.getCode(), Platform.FRONT_DESK.getCode(), Warranty_Status.IN_WARRANTY.getCode(), OEM.GOOGLE.getCode(), customer, customerAddress, customerProduct, problemList);
+	}
+	
+	@Test(description="Verifying if create job api is able to create Inwarrant jobs",groups= {"api","regression","smoke"})
+	public void createAPITest()
+	{
 		
+//		Customer customer = new Customer("Umesh", "Parab", "9769082745", "", "umesh.parabcr10@gmail.com", "");
+//		CustomerAddress customerAddress = new CustomerAddress("B 999","Vasant Galaxy","Bangur Nagar", "InOrbit Mall","Mumbai", "500032","India","Maharashtra");
+//		CustomerProduct customerProduct = new CustomerProduct(DateTimeUtil.getTimeWithDaysAgo(10), "25593655465247", "25593655465247", "25593655465247", DateTimeUtil.getTimeWithDaysAgo(10), Product.NEXUS_2.getCode(), Model.NEXUS_2_BLUE.getCode());
+//		Problems problems=new Problems(Problem.SMARTPHONE_IS_RUNNING_SLOW.getCode(), "Battery Issues");
+//		List<Problems> problemList = new ArrayList<Problems>();
+//		problemList.add(problems);
+//		CreateJobPayload createJobPayload = new CreateJobPayload(ServiceLocation.SERVICE_LOCATION_A.getCode(), Platform.FRONT_DESK.getCode(), Warranty_Status.IN_WARRANTY.getCode(), OEM.GOOGLE.getCode(), customer, customerAddress, customerProduct, problemList);
+//		
 		
 		given()
 //		.baseUri(ConfigManager.getProperty("BASE_URI"))
