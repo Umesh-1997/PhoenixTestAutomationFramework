@@ -20,7 +20,7 @@ import static io.restassured.RestAssured.*;
 public class CountAPITest {
 
 	
-	@Test(description="Verifying if count api is giving correct response",groups= {"api","regression","smoke"})
+	@Test(description="Verifying if count api is giving correct response to end user",groups= {"api","regression","smoke"})
 	public void verifyCountAPIResponse()
 	{
 		given()
