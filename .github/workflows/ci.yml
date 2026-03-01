@@ -5,10 +5,12 @@ on:
     branches: [ "master" ]
   pull_request:
     branches: [ "master" ]
-  schedule: # Set the Cron for MIDNIGHT IST ---- UTC
+  schedule: # Set the CRON for MIDNIGHT IST ---- UTC
     - cron: "30 18 * * *"
     - cron: "30 17 * * *"
-  workflow_dispatch:
+    - cron: "30 16 * * *"
+    
+  workflow_dispatch: 
     inputs:
       env:
         description: "Environment"
@@ -17,13 +19,11 @@ on:
         default: qa
         required: true
       suiteXmlFile:
-        description: "TestNG XML File"
+        description: "TestNG Xml File"
         type: choice
         options: [testng.xml,smoke.xml,regression.xml]
         default: testng.xml
         required: true
-      
-
 jobs:
   test:
 
@@ -43,11 +43,11 @@ jobs:
       id: default
       run: |
             echo "suiteXmlFile=${{ github.event.inputs.suiteXmlFile || 'testng.xml'}}" >> $GITHUB_OUTPUT
-            echo "env=${{ github.event.inputs.env || 'qa' }} >> $GITHUB_OUTPUT
-        
+            echo "env=${{ github.event.inputs.env || 'qa' }}" >> $GITHUB_OUTPUT
+
     - name: Execute Test Automation Framework
       run: mvn clean test -DsuiteXmlFile="${{ steps.default.outputs.suiteXmlFile }}" -Denv="${{ steps.default.outputs.env }}"
-
+    
     - name: Upload a Build Artifact
       if: always()
       uses: actions/upload-artifact@v4.6.2
@@ -56,4 +56,6 @@ jobs:
         path: target/surefire-reports/
         retention-days: 10
 
-    
+      
+
+  
