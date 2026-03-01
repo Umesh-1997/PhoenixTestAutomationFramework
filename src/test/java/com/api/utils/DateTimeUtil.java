@@ -10,7 +10,7 @@ public class DateTimeUtil {
 		
 	}
 	
-	public static String getTimeWithDaysAge(int days)
+	public static String getTimeWithDaysAgo(int days)
 	{	
 		return Instant.now().minus(days,ChronoUnit.DAYS).toString();
 		
