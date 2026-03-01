@@ -5,8 +5,9 @@ import static io.restassured.RestAssured.*;
 import static org.hamcrest.Matchers.*;
 
 import com.api.constant.Role;
+import com.api.request.model.UserCredentials;
+
 import static com.api.constant.Role.*;
-import com.api.pojo.UserCredentials;
 
 import io.restassured.http.ContentType;
 import io.restassured.module.jsv.JsonSchemaValidator;
